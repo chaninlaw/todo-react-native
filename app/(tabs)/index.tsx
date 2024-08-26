@@ -1,31 +1,44 @@
-import { StyleSheet } from 'react-native';
+import { SectionListData, StyleSheet } from 'react-native'
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+import { View } from '@/components/Themed'
+import { AgendaList } from 'react-native-calendars'
+import { TodoAgendaItem } from '@/components/TodoAgendaItem'
+import Colors from '@/constants/Colors'
+import { useColorScheme } from '@/components/useColorScheme'
 
-export default function TabOneScreen() {
+const data: SectionListData<{
+  title: string
+  description?: string
+  completed?: boolean
+}>[] = [
+  {
+    title: '2023-05-22',
+    data: [
+      { title: 'Buy groceries', description: 'Milk, eggs, bread' },
+      { title: 'Call mom', completed: true },
+    ],
+    renderItem: ({ item }) => <TodoAgendaItem item={item} />,
+  },
+]
+
+export default function HomeScreen() {
+  const colorScheme = useColorScheme()
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <AgendaList
+        sections={data}
+        style={{}}
+        sectionStyle={{
+          backgroundColor: Colors[colorScheme].background,
+        }}
+      />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+})
